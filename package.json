@@ -1,0 +1,39 @@
+{
+  "name": "@bevy-technologies/cloud-logger",
+  "version": "1.0.0",
+  "description": "Wrapper for GCP Cloud logging",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bevy-technologies/cloud-logger.git"
+  },
+  "author": "Bevy Friendly Technologies",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bevy-technologies/cloud-logger/issues"
+  },
+  "homepage": "https://github.com/bevy-technologies/cloud-logger#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.5",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "@google-cloud/logging": "^11.1.0",
+    "axios": "^1.7.2",
+    "continuation-local-storage": "^3.2.1",
+    "crypto": "^1.0.1"
+  }
+}
