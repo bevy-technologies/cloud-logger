@@ -9,44 +9,44 @@ export class Logger implements CloudLoggerInterface {
     ) {
     }
 
-    alert(message: any, extra: any = {}): Promise<void> {
+    alert(message: any, extra: any = {}): void {
         return this.log(message, extra, "ALERT");
     }
 
-    critical(message: any, extra: any = {}): Promise<void> {
+    critical(message: any, extra: any = {}): void {
         return this.log(message, extra, "CRITICAL");
     }
 
-    debug(message: any, extra: any = {}): Promise<void> {
+    debug(message: any, extra: any = {}): void {
         return this.log(message, extra, "DEBUG");
     }
 
-    emergency(message: any, extra: any = {}): Promise<void> {
+    emergency(message: any, extra: any = {}): void {
         return this.log(message, extra, "EMERGENCY");
     }
 
-    error(message: any, extra: any = {}): Promise<void> {
+    error(message: any, extra: any = {}): void {
         return this.log(message, extra, "ERROR");
     }
 
-    info(message: any, extra: any = {}): Promise<void> {
+    info(message: any, extra: any = {}): void {
         return this.log(message, extra, "INFO");
     }
 
-    notice(message: any, extra: any = {}): Promise<void> {
+    notice(message: any, extra: any = {}): void {
         return this.log(message, extra, "NOTICE");
     }
 
-    warn(message: any, extra: any = {}): Promise<void> {
+    warn(message: any, extra: any = {}): void {
         return this.log(message, extra, "WARNING");
     }
 
-    private async log(
+    private log(
         message: any,
         extra: any = {},
         severity: SeverityNames,
     ) {
-        return this.shouldLog(severity)
+        this.shouldLog(severity)
             ? this.adapter.log(message, extra, severity)
             : undefined;
     }
