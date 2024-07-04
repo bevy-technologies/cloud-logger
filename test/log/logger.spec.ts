@@ -3,6 +3,7 @@ import {Logger} from "../../src/log/logger";
 import {CloudLoggerAdapterInterface} from "../../src/log/logger-interfaces";
 import {GcpLoggerAdapter} from "../../src/log/gcp-logger-adapter";
 import {LoggingOptionsDefaults} from "../../src/log/logging-options";
+import {ConsoleLoggerAdapter} from "../../src/log/console-logger-adapter";
 
 const extra = {test: "test"};
 const message = "test";
@@ -19,7 +20,11 @@ afterEach(() => {
     resetAllMocks();
 })
 describe("Logger", () => {
-    it("can be created", async () => {
+    it("can be created with console logger adapter", async () => {
+        const logger = new Logger(new ConsoleLoggerAdapter());
+        expect(logger).toBeInstanceOf(Logger);
+    });
+    it("can be created with cloud logger adapter", async () => {
         const logger = new Logger(new GcpLoggerAdapter());
         expect(logger).toBeInstanceOf(Logger);
         logger.warn("blah", extra);
