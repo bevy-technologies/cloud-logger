@@ -5,6 +5,6 @@ import {GcpWrapper} from "./log/gcp-wrapper";
 import {ConsoleLoggerAdapter} from "./log/console-logger-adapter";
 
 const adapter = process.env.CLOUD_LOGGER_CONSOLE_FALLBACK
-    ? new GcpLoggerAdapter(new GcpWrapper(), LoggingOptionsDefaults)
-    : new ConsoleLoggerAdapter();
+    ? new ConsoleLoggerAdapter()
+    : new GcpLoggerAdapter(new GcpWrapper(), LoggingOptionsDefaults);
 export const logger = new Logger(adapter);
