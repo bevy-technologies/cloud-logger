@@ -40,9 +40,6 @@ export class GcpLoggerAdapter implements CloudLoggerAdapterInterface {
         };
         const meta = {
             severity: severity,
-            resource: {
-                type: 'global',
-            },
             traceSampled: false,
             trace: getTraceId(),
         } as ILogEntry;
