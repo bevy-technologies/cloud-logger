@@ -9,7 +9,10 @@ export enum Severity {
     INFO = 6,
     DEBUG = 7,
 }
+
 export type SeverityNames = keyof typeof Severity;
+export const severityKeys = Object.keys(Severity) as string[];
+
 export interface LoggingOptions {
     projectName: string;
     applicationId: string;
@@ -18,7 +21,7 @@ export interface LoggingOptions {
     serviceName: string;
     version: string;
     projectId: string;
-    logName: string;
+    logLevel: string;
 }
 
 export const LoggingOptionsDefaults: LoggingOptions = {
@@ -29,5 +32,5 @@ export const LoggingOptionsDefaults: LoggingOptions = {
     serviceName: process.env.GAE_SERVICE ?? '',
     version: process.env.GAE_VERSION ?? '',
     projectId: process.env.GOOGLE_CLOUD_PROJECT ?? '',
-    logName: process.env.CLOUD_LOG_NAME ?? '',
+    logLevel: process.env.CLOUD_LOGGER_LEVEL ?? '',
 };

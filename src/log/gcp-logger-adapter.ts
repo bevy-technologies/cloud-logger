@@ -4,8 +4,8 @@ import {GcpWrapper} from "./gcp-wrapper";
 import {google} from "@google-cloud/logging/build/protos/protos";
 import {LoggingOptions, LoggingOptionsDefaults, SeverityNames} from "./logging-options";
 import {CloudLoggerAdapterInterface} from "./logger-interfaces";
-import ILogEntry = google.logging.v2.ILogEntry;
 import {getTraceId} from "../tracing";
+import ILogEntry = google.logging.v2.ILogEntry;
 
 export class GcpLoggerAdapter implements CloudLoggerAdapterInterface {
     /**
@@ -17,43 +17,35 @@ export class GcpLoggerAdapter implements CloudLoggerAdapterInterface {
     private readonly logger: GcpWrapper;
 
     constructor(logger?: GcpWrapper, private readonly options: LoggingOptions = LoggingOptionsDefaults) {
-        const logName = this.options.logName ?? 'applications';
-        this.logger = logger ?? new GcpWrapper(this.options.projectName, logName);
+        this.logger = logger ?? new GcpWrapper();
     }
 
     async log(
         message: any,
         extra: any = {},
+        meta: any = {},
         severity: SeverityNames,
     ) {
-        this.entry(message, extra, severity);
+        await this.entry(message, extra, meta, severity);
     }
 
-    private entry(message: any, extra: any, severity: SeverityNames): Entry {
+    private async entry(message: any, extra: any, metadata: any, severity: SeverityNames): Promise<Entry> {
         const applicationSpan: UUID = GcpLoggerAdapter.applicationSpan;
-        const meta = {
-            jsonPayload: {
-                fields: {
-                    applicationSpan: applicationSpan,
-                    extra: extra,
-                },
-            },
+        const msg: any = {
+            message,
+            metadata,
+            applicationSpan: applicationSpan,
+            context: extra,
             textPayload: message,
+        };
+        const meta = {
             severity: severity,
             resource: {
-                labels: {
-                    projectId: this.options.projectId,
-                    projectName: this.options.projectName,
-                    applicationId: this.options.applicationId,
-                    deploymentId: this.options.deploymentId,
-                    environment: this.options.environment,
-                    service: this.options.serviceName,
-                    version: this.options.version,
-                },
+                type: 'global',
             },
             traceSampled: false,
             trace: getTraceId(),
         } as ILogEntry;
-        return this.logger.entry(meta);
+        return this.logger.write(meta, msg);
     }
 }

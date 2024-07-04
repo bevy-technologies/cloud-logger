@@ -1,53 +1,58 @@
-import {Severity, SeverityNames} from "./logging-options";
+import {LoggingOptions, LoggingOptionsDefaults, Severity, severityKeys, SeverityNames} from "./logging-options";
 import {CloudLoggerAdapterInterface, CloudLoggerInterface} from "./logger-interfaces";
 
 export class Logger implements CloudLoggerInterface {
+    private readonly logLevel: SeverityNames;
 
     constructor(
         private readonly adapter: CloudLoggerAdapterInterface,
-        private readonly logLevel: SeverityNames = "INFO"
+        private readonly loggingOptions: LoggingOptions = LoggingOptionsDefaults
     ) {
+        const logLevel = loggingOptions.logLevel;
+        this.logLevel = severityKeys.includes(logLevel)
+            ? logLevel as SeverityNames
+            : "INFO"
     }
 
-    alert(message: any, extra: any = {}): void {
+    async alert(message: any, extra: any = {}): Promise<void> {
         return this.log(message, extra, "ALERT");
     }
 
-    critical(message: any, extra: any = {}): void {
+    async critical(message: any, extra: any = {}): Promise<void> {
         return this.log(message, extra, "CRITICAL");
     }
 
-    debug(message: any, extra: any = {}): void {
+    async debug(message: any, extra: any = {}): Promise<void> {
         return this.log(message, extra, "DEBUG");
     }
 
-    emergency(message: any, extra: any = {}): void {
+    async emergency(message: any, extra: any = {}): Promise<void> {
         return this.log(message, extra, "EMERGENCY");
     }
 
-    error(message: any, extra: any = {}): void {
+    async error(message: any, extra: any = {}): Promise<void> {
         return this.log(message, extra, "ERROR");
     }
 
-    info(message: any, extra: any = {}): void {
+    async info(message: any, extra: any = {}): Promise<void> {
         return this.log(message, extra, "INFO");
     }
 
-    notice(message: any, extra: any = {}): void {
+    async notice(message: any, extra: any = {}): Promise<void> {
         return this.log(message, extra, "NOTICE");
     }
 
-    warn(message: any, extra: any = {}): void {
+    async warn(message: any, extra: any = {}): Promise<void> {
         return this.log(message, extra, "WARNING");
     }
 
-    private log(
+    private async log(
         message: any,
         extra: any = {},
         severity: SeverityNames,
     ) {
-        this.shouldLog(severity)
-            ? this.adapter.log(message, extra, severity)
+        return this.shouldLog(severity)
+            ? await this.adapter.log(message, extra, this.loggingOptions, severity)
             : undefined;
     }
 
