@@ -16,7 +16,7 @@ export const getTraceId = () => `projects/${project}/traces/${ns.get('trace')}`;
 export const getTraceHeader = () => ns.get('trace-header');
 export const expressTracingMiddleware = (req: Request, res: Response, next: NextFunction) => {
     ns.run(() => {
-        const header: string | null = req.headers.get(headerName);
+        const header: string | undefined = req.header(headerName);
         const chunks: string[] | undefined = header?.split(';');
         if (chunks) {
             ns.set('trace-header', header ?? randomUUID());
