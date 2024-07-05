@@ -1,5 +1,6 @@
 import axios from "axios";
 import {randomUUID} from "crypto";
+import { Request, Response, NextFunction } from 'express';
 
 const createNamespace = require('continuation-local-storage').createNamespace;
 const ns = createNamespace('logger-context');
@@ -13,7 +14,7 @@ axios.interceptors.request.use((conf) => {
 
 export const getTraceId = () => `projects/${project}/traces/${ns.get('trace')}`;
 export const getTraceHeader = () => ns.get('trace-header');
-export const tracingMiddleware = (req: Request, res: Response, next: () => void) => {
+export const expressTracingMiddleware = (req: Request, res: Response, next: NextFunction) => {
     ns.run(() => {
         const header: string | null = req.headers.get(headerName);
         const chunks: string[] | undefined = header?.split(';');
