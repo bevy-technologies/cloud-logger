@@ -1,6 +1,6 @@
 {
     "name": "@bevy-technologies/cloud-logger",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "description": "Wrapper for GCP Cloud logging",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
