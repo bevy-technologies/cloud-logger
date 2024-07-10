@@ -1,8 +1,7 @@
 import axios from "axios";
-import {randomUUID} from "crypto";
 import { Request, Response, NextFunction } from 'express';
 
-const { AsyncLocalStorage } = require('node:async_hooks');
+import { AsyncLocalStorage } from "node:async_hooks";
 const headerName: string = 'X-Cloud-Trace-Context';
 const project = process.env.GOOGLE_CLOUD_PROJECT;
 
@@ -13,7 +12,7 @@ axios.interceptors.request.use((conf) => {
 const als = new AsyncLocalStorage();
 
 export const getTraceId = () => `projects/${project}/traces/${als.getStore()}`;
-export const getTraceHeader = () => als.getStore();
+export const getTraceHeader = () => als.getStore() as string;
 export const expressTracingMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
     const header: string | undefined = req.header(headerName);
