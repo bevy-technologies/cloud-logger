@@ -14,7 +14,7 @@ axios.interceptors.request.use((conf) => {
 });
 const als = new AsyncLocalStorage();
 const extractTraceContext = (): TraceContext => {
-    const raw =  als.getStore()  ?? '{}';
+    const raw =  als.getStore() as string ?? '{}';
     return JSON.parse(raw);
 }
 export const getSpanId = () => extractTraceContext().spanId;
