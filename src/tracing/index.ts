@@ -14,14 +14,14 @@ axios.interceptors.request.use((conf) => {
 });
 const als = new AsyncLocalStorage();
 const extractTraceContext = (): TraceContext => {
-    const raw =  als.getStore() as string ?? '{}';
+    const raw =  als.getStore()  ?? '{}';
     return JSON.parse(raw);
 }
 export const getSpanId = () => extractTraceContext().spanId;
 export const getTraceId = () => `projects/${project}/traces/${extractTraceContext().traceId}`;
 export const getTraceHeader = () => extractTraceContext().traceId;
 export const expressTracingMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    let rawContext = {};
+    let rawContext = '{}';
     const header: string | undefined = req.header(headerName);
     const chunks: string[] | undefined = header?.split(';') ?? [];
     if(header) {
