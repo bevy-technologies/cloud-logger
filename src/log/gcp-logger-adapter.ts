@@ -4,7 +4,7 @@ import {GcpWrapper} from "./gcp-wrapper";
 import {google} from "@google-cloud/logging/build/protos/protos";
 import {LoggingOptions, LoggingOptionsDefaults, SeverityNames} from "./logging-options";
 import {CloudLoggerAdapterInterface} from "./logger-interfaces";
-import {getTraceId} from "../tracing";
+import {getSpanId, getTraceId} from "../tracing";
 import ILogEntry = google.logging.v2.ILogEntry;
 
 export class GcpLoggerAdapter implements CloudLoggerAdapterInterface {
@@ -40,6 +40,7 @@ export class GcpLoggerAdapter implements CloudLoggerAdapterInterface {
         };
         const meta = {
             severity: severity,
+            spanId: getSpanId(),
             traceSampled: false,
             trace: getTraceId(),
         } as ILogEntry;

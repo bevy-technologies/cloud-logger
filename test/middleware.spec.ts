@@ -9,10 +9,10 @@ describe("Logger", () => {
     it("can be created with console logger adapter", async () => {
         return request(app)
             .get('/')
-            .set('X-Cloud-Trace-Context', 'test')
+            .set('X-Cloud-Trace-Context', 'test-once/test-again')
             .expect(200)
             .then(response => {
-                expect(response.text).toBe("test");
+                expect(response.text).toBe("test-once");
             });
     });
 });
