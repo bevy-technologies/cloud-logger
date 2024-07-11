@@ -8,7 +8,7 @@ export class GcpWrapper {
     private readonly logger: Log;
 
     constructor() {
-        this.logger = new Logging().log('applications');
+        this.logger = new Logging().log('applications', {removeCircular: true});
     }
 
     public async write(entry: ILogEntry, message: {}): Promise<Entry> {
